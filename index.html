@@ -36,14 +36,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.js"></script>
 <script>
-    function daysInMonth() {
-        var today = new Date();
-        return new Date(today.getYear(), today.getMonth(), 0).getDate();
+    function daysInMonth(year, month) {
+        var isLeap = ((year % 4) == 0 && ((year % 100) != 0 || (year % 400) == 0));
+        return [31, (isLeap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
     }
     function calculate() {
         var downtime = parseFloat($("#downtime").val());
         var bill = parseFloat($("#bill").val());
-        var hours = daysInMonth() * 24;
+        var today = new Date();
+        var hours = daysInMonth(today.getYear(), today.getMonth()) * 24;
         var percentage = ((hours - downtime) / hours) * 100;
         var refund = ((99.99 - percentage) / 100 * bill);
         var company = $('input[name=company]:checked', '#company').val();
