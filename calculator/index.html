@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SLA Refund Calculator</title>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<br/>
+
+<div id="calculator">
+    <div class="row">
+        <div class="col-sm-offset-5 col-sm-3">
+            <form id="company">
+                <input type="radio" name="company" value="Intreppid" checked/> Intreppid <br/>
+                <input type="radio" name="company" value="Staminus"/> Staminus <br/>
+            </form>
+            <div class="input-group">
+                <input type="text" class="form-control" id="downtime" placeholder="Downtime this month">
+                <span class="input-group-addon">Hours</span>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" id="bill" placeholder="Monthly Bill">
+            </div>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="calculate();">Calculate</button>
+                </span>
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" id="result">
+            </div>
+            <h6>Created by EDawg878</h6>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.js"></script>
+<script>
+    function daysInMonth() {
+        var today = new Date();
+        return new Date(today.getYear(), today.getMonth(), 0).getDate();
+    }
+    function calculate() {
+        var downtime = parseFloat($("#downtime").val());
+        var bill = parseFloat($("#bill").val());
+        var hours = daysInMonth() * 24;
+        var percentage = ((hours - downtime) / hours) * 100;
+        var refund = ((99.99 - percentage) / 100 * bill);
+        var company = $('input[name=company]:checked', '#company').val();
+        if (company === "Intreppid") {
+            refund *= 2;
+        }
+        if (refund > bill) {
+            refund = bill;
+        }
+        refund = Math.round(refund * 100) / 100;
+        $("#result").val(refund);
+    }
+</script>
+</body>
+</html>
